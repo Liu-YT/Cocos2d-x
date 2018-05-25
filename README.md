@@ -13,7 +13,7 @@
 
 
 
-##hw10 GoldMiners
+## hw10 GoldMiners
 
 新版黄金矿工游戏，共有两个界面：主界面与游戏界面
 
