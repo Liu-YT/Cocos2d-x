@@ -154,18 +154,20 @@ void HelloWorld::Xfun(cocos2d::Ref * pSpender)
 {
 	if (!acting) {
 		acting = true;
+		//播放X动作时候的动画
 		Animate* deadAnimate = Animate::create(AnimationCache::getInstance()->getAnimation("deadAnimation"));
-		auto set = CCCallFunc::create(([this]() {
+		auto set = CallFunc::create(([this]() {
 			log("x");
 			acting = false;
 		}));
-		CCSequence* deadSeq = CCSequence::create(deadAnimate, set, NULL);
+		//当播放完动画以后才设置acting的值
+		Sequence* deadSeq = Sequence::create(deadAnimate, set, NULL);
 		player->runAction(deadSeq);
 
 		//	减血
 		int num = pT->getPercentage();
 		if (num > 0) {
-			CCProgressTo* progressTo = CCProgressTo::create(1.5f, num - 20);
+			ProgressTo* progressTo = ProgressTo::create(1.5f, num - 20);
 			pT->runAction(progressTo);
 		}
 	}
@@ -177,18 +179,18 @@ void HelloWorld::Yfun(cocos2d::Ref * pSpender)
 	if (!acting) {
 		acting = true;
 		Animate* attackAnimate = Animate::create(AnimationCache::getInstance()->getAnimation("attackAnimation"));
-		auto set = CCCallFunc::create(([this]() {
+		auto set = CallFunc::create(([this]() {
 			log("y");
 			acting = false;
 		}));
-		CCSequence* attackSeq = CCSequence::create(attackAnimate, set, NULL);
+		Sequence* attackSeq = Sequence::create(attackAnimate, set, NULL);
 		player->runAction(attackSeq);
 
 
 		//	加血
 		int num = pT->getPercentage();
 		if (num < 100) {
-			CCProgressTo* progressTo = CCProgressTo::create(1.5f, num + 20);
+			ProgressTo* progressTo = ProgressTo::create(1.5f, num + 20);
 			pT->runAction(progressTo);
 		}
 	}
