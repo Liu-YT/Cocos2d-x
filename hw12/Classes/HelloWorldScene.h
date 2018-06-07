@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "Monster.h"
+#include "sqlite3.h" 
 #define database UserDefault::getInstance()
 using namespace cocos2d;
 
@@ -48,6 +49,7 @@ private:
 	cocos2d::Label* time;
 	cocos2d::Label* attackNum;
 	cocos2d::ProgressTimer* pT;
+	sqlite3* db;
 	bool acting;
 	bool endGame;
 };

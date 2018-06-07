@@ -26,6 +26,15 @@ bool HelloWorld::init()
         return false;
     }
 
+	/* 数据库sqlite */
+	char * errMsg = NULL;	//错误信息   
+	std::string sqlstr;		//SQL指令   
+	int result;				//sqlite3_exec返回值   
+	//打开一个数据库，如果该数据库不存在，则创建一个数据库文件   
+	result = sqlite3_open("simpleGame.db", &db);
+	//创建表，设置ID为主键，且自动增加   
+	result = sqlite3_exec(db, "create table if not exists Scores( ID integer primary key autoincrement, score nvarchar(32) ) ", NULL, NULL, &errMsg);
+
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
 
@@ -353,7 +362,15 @@ void HelloWorld::attackMoster(cocos2d::Ref * pSpender) {
 
 //存
 void HelloWorld::store() {
+	
+	/* sqlite */
+	char * errMsg = NULL;	//错误信息   
+	std::string sqlstr = " insert into Scores( score ) values ( '" + attackNum->getString() + "' ) ";
+	sqlite3_exec(db, sqlstr.c_str(), NULL, NULL, &errMsg);
+	//关闭数据库   
+	sqlite3_close(db);
 
+	/* userdefault */
 	//检测xml文件是否存在（非必须）
 	if(!database->getBoolForKey("isExist")) {
 		database->setBoolForKey("isExist", true);
@@ -373,8 +390,10 @@ void HelloWorld::store() {
 
 //取
 int HelloWorld::get() {
+	/* sqlite */
 
-	//log("%s", FileUtils::getInstance()->getWritablePath().c_str());
+	/* userdefault */
+	log("%s", FileUtils::getInstance()->getWritablePath().c_str());
 
 	//检测xml文件是否存在（非必须）
 	if (!database->getBoolForKey("isExist")) {
